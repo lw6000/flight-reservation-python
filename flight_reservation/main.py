@@ -3,10 +3,33 @@ import os
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-
 # Task 2, 5, 9: Import modules here
+#may move to a seperate file
+import mysql.connector
+import pandas as pd
+from sqlalchemy import create_engine
+from sqlalchemy import Table, MetaData
+from sqlalchemy.dialects.mysql import insert
 
 
+
+def register():
+    connection = mysql.connector.connect(
+    host="localhost",
+    user="educative",
+    password="secret",
+    database="flight")
+
+    print("NEW USER REGISTRATION")
+    newUsername = input("Enter new Username: ")
+    newPassword = input("Enter new Password: ")
+    if connection.is_connected():
+        mycursor = connection.cursor()
+        insert_query = "INSERT INTO account (username, password, status) VALUES (%s, %s, %s)"
+        mycursor.execute(insert_query, (newUsername, newPassword, "active"))
+        connection.commit()
+        print("New User Registered, please login to use the database")
+    
 # Task 2, 6, 10, 18: Redefine the main() function
 def main():
     pass
@@ -14,7 +37,7 @@ def main():
 if __name__ == "__main__":
     main()
     print("Welcome to the Airline Database Program!")
-    print("Please Select an Option: ")
+    print("Please Select an Option (1-3): ")
     print("1 - Login ")
     print("2 - Register ")
     print("3 - Exit ")
@@ -24,7 +47,7 @@ if __name__ == "__main__":
         if choice == '1':
             print("Temporary Login")
         elif choice == '2':
-            print("Temporary register")
+            register()
         elif choice == '3':
             print("Goodbye, and thank you for using the Airline Database Program!")
         else:
