@@ -45,14 +45,20 @@ def loginSuccess(username):
     print("5. Cancel Flight (admin only)")
     print("6. Log off")
     loginchoice = None
-    while loginchoice != '3':
+    while loginchoice != '6':
         loginchoice = input("Make your selection now: ")
         if loginchoice == '1':
-            print("1")
+            print("Here to search/reserve flights.")
         elif loginchoice == '2':
-            print("2")
+            print("Here to view flight reservations.")
+        elif loginchoice == '3':
+            print("Here to cancel flight reservations.")
+        elif loginchoice == '4':
+            print("Here to add new flight.")
+        elif loginchoice == '5':
+            print("Here to cancel a flight.")
         elif loginchoice == '6':
-            print("Logging off")
+            print("Logging off...")
             print("1 - Login ")
             print("2 - Register ")
             print("3 - Exit ")
@@ -110,6 +116,5 @@ if __name__ == "__main__":
             print("Goodbye, and thank you for using the Airline Database Program!")
         else:
             print(choice, "is not an option, please select options 1, 2, or 3.")
-            choice = None
     
     
