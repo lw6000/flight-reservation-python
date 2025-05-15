@@ -1,6 +1,7 @@
 # Add the project root directory to sys.path
 import os
 import sys
+from mysql.connector.errors import IntegrityError
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 # Task 2, 5, 9: Import modules here
@@ -11,7 +12,30 @@ from sqlalchemy import create_engine
 from sqlalchemy import Table, MetaData
 from sqlalchemy.dialects.mysql import insert
 
+def login():
+    connection = mysql.connector.connect(
+    host="localhost",
+    user="educative",
+    password="secret",
+    database="flight")
 
+    print("LOGIN")
+    username = input("Enter Username: ")
+    password = input("Enter Password: ")
+
+    if connection.is_connected():
+        mycursor = connection.cursor()
+        insert_query = "SELECT * FROM account WHERE username = %s AND password = %s"
+        mycursor.execute(insert_query, (username, password))
+        result = mycursor.fetchone()
+        if result:
+            loginSuccess(username)
+        else:
+            print("Incorrect username or password, please try again.")
+                
+
+def loginSuccess(username):
+    print("Hello ", username)
 
 def register():
     connection = mysql.connector.connect(
@@ -23,13 +47,23 @@ def register():
     print("NEW USER REGISTRATION")
     newUsername = input("Enter new Username: ")
     newPassword = input("Enter new Password: ")
+
+
     if connection.is_connected():
         mycursor = connection.cursor()
         insert_query = "INSERT INTO account (username, password, status) VALUES (%s, %s, %s)"
-        mycursor.execute(insert_query, (newUsername, newPassword, "active"))
-        connection.commit()
-        print("New User Registered, please login to use the database")
-    
+        try:
+            mycursor.execute(insert_query, (newUsername, newPassword, "active"))
+            connection.commit()
+            print("New User Registered, please login to use the database")
+        except IntegrityError as e:
+            if e.errno == 1062:
+                print(f"Username '{newUsername}' is already taken, please enter a new one.")
+            else:
+                print(f"An error occurred: {e}")
+        
+        
+        
 # Task 2, 6, 10, 18: Redefine the main() function
 def main():
     pass
@@ -45,7 +79,7 @@ if __name__ == "__main__":
     while choice != '3':
         choice = input("Make your selection now: ")
         if choice == '1':
-            print("Temporary Login")
+            login()
         elif choice == '2':
             register()
         elif choice == '3':
