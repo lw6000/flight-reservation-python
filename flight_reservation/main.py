@@ -31,11 +31,35 @@ def login():
         if result:
             loginSuccess(username)
         else:
-            print("Incorrect username or password, please try again.")
+            print("Incorrect username or password, please type 1 try again.")
                 
 
 def loginSuccess(username):
     print("Hello ", username)
+    print("Please select an option!")
+    print("Please Select an Option (1-6): ")
+    print("1. Search/Reserve Flights")
+    print("2. View Reservations")
+    print("3. Cancel Reservation")
+    print("4. Add Flight (admin only)")
+    print("5. Cancel Flight (admin only)")
+    print("6. Log off")
+    loginchoice = None
+    while loginchoice != '3':
+        loginchoice = input("Make your selection now: ")
+        if loginchoice == '1':
+            print("1")
+        elif loginchoice == '2':
+            print("2")
+        elif loginchoice == '6':
+            print("Logging off")
+            print("1 - Login ")
+            print("2 - Register ")
+            print("3 - Exit ")
+            return
+        else:
+            print(loginchoice, "is not an option, please select options 1-6.")
+            loginchoice = None
 
 def register():
     connection = mysql.connector.connect(
@@ -58,7 +82,7 @@ def register():
             print("New User Registered, please login to use the database")
         except IntegrityError as e:
             if e.errno == 1062:
-                print(f"Username '{newUsername}' is already taken, please enter a new one.")
+                print(f"Username '{newUsername}' is already taken, please type 2 enter a new one.")
             else:
                 print(f"An error occurred: {e}")
         
@@ -86,5 +110,6 @@ if __name__ == "__main__":
             print("Goodbye, and thank you for using the Airline Database Program!")
         else:
             print(choice, "is not an option, please select options 1, 2, or 3.")
+            choice = None
     
     
