@@ -2,6 +2,7 @@
 import os
 import sys
 from mysql.connector.errors import IntegrityError
+from models.flight_reservation import FlightReservation
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 # Task 2, 5, 9: Import modules here
@@ -45,10 +46,12 @@ def loginSuccess(username):
     print("5. Cancel Flight (admin only)")
     print("6. Log off")
     loginchoice = None
+    reservation = FlightReservation()
     while loginchoice != '6':
         loginchoice = input("Make your selection now: ")
         if loginchoice == '1':
             print("Here to search/reserve flights.")
+            reservation.reserveFlight()
         elif loginchoice == '2':
             print("Here to view flight reservations.")
         elif loginchoice == '3':
