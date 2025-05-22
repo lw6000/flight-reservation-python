@@ -20,7 +20,6 @@ def login():
     password="secret",
     database="flight")
 
-    print("LOGIN")
     username = input("Enter Username: ")
     password = input("Enter Password: ")
 
@@ -37,21 +36,20 @@ def login():
 
 def loginSuccess(username):
     print("Hello ", username)
-    print("Please select an option!")
     print("Please Select an Option (1-6): ")
-    print("1. Search/Reserve Flights")
-    print("2. View Reservations")
-    print("3. Cancel Reservation")
-    print("4. Add Flight (admin only)")
-    print("5. Cancel Flight (admin only)")
-    print("6. Log off")
     loginchoice = None
     reservation = FlightReservation()
     while loginchoice != '6':
+        print("1. Search/Reserve Flights")
+        print("2. View Reservations")
+        print("3. Cancel Reservation")
+        print("4. Add Flight (admin only)")
+        print("5. Cancel Flight (admin only)")
+        print("6. Log off")
         loginchoice = input("Make your selection now: ")
         if loginchoice == '1':
-            print("Here to search/reserve flights.")
-            reservation.reserveFlight()
+            print("Search for Flights:")
+            reservation.reserveFlight(username)
         elif loginchoice == '2':
             print("Here to view flight reservations.")
         elif loginchoice == '3':
@@ -62,9 +60,6 @@ def loginSuccess(username):
             print("Here to cancel a flight.")
         elif loginchoice == '6':
             print("Logging off...")
-            print("1 - Login ")
-            print("2 - Register ")
-            print("3 - Exit ")
             return
         else:
             print(loginchoice, "is not an option, please select options 1-6.")
@@ -105,11 +100,11 @@ if __name__ == "__main__":
     main()
     print("Welcome to the Airline Database Program!")
     print("Please Select an Option (1-3): ")
-    print("1 - Login ")
-    print("2 - Register ")
-    print("3 - Exit ")
     choice = None
     while choice != '3':
+        print("1 - Login ")
+        print("2 - Register ")
+        print("3 - Exit ")
         choice = input("Make your selection now: ")
         if choice == '1':
             login()
