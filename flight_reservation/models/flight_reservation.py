@@ -51,7 +51,9 @@ class FlightReservation:
                         mycursor.execute("SELECT account_id FROM account WHERE username = %s", (username,))
                         accID = mycursor.fetchone()
                         today = date.today()
-                        data = (accID, flightNum, 2, today, 420.00)
+                        data = (accID[0], flightNum, 2, today, 420.00)
+                        mycursor.execute(insert_query, data)
+                        connection.commit()
                         print("Flight number:", myresult[0], " booked, have a safe flight!")
                         return
                     elif bookFlight in ['no', 'n']:
@@ -63,4 +65,30 @@ class FlightReservation:
                 print("Sorry, we do not have an available flight for this location. Returning to Menu.")
                 return
             
+    def flightSearch(self, username):
+        connection = mysql.connector.connect(
+            host="localhost",
+            user="educative",
+            password="secret",
+            database="flight")
+
+        mycursor = connection.cursor()
+        mycursor.execute("SELECT account_id FROM account WHERE username = %s", (username,))
+        accID = mycursor.fetchone()
+
+        user_id = accID[0]
+        query = "SELECT * FROM flightreservation WHERE user_id = %s"
+        mycursor.execute(query, (user_id,))
+        user_flights = mycursor.fetchall()
+
+        if not user_flights:
+            print(f"No flight reservations found for user: {username}")
+        else:
+            print(f"{'Reservation':<15}{'User ID':<10}{'Flight No':<10}{'Seats':<6}{'Date':<20}{'Amount':<10}")
+            print("-" * 70)
+            for flight in user_flights:
+                reservation_number, user_id, flight_no, seats, creation_date, payment_amount = flight
+                print(f"{reservation_number:<15}{user_id:<10}{flight_no:<10}{seats:<6}{creation_date:<20}{payment_amount:<10}")
+
+           
             
