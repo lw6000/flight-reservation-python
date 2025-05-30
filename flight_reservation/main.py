@@ -54,7 +54,8 @@ def loginSuccess(username):
             print("Your Flight Reservations:")
             reservation.flightSearch(username)
         elif loginchoice == '3':
-            print("Here to cancel flight reservations.")
+            print("Cancel a flight reservation?")
+            reservation.flightRemove(username)
         elif loginchoice == '4':
             print("Here to add new flight.")
         elif loginchoice == '5':

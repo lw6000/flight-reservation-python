@@ -90,5 +90,27 @@ class FlightReservation:
                 reservation_number, user_id, flight_no, seats, creation_date, payment_amount = flight
                 print(f"{reservation_number:<15}{user_id:<10}{flight_no:<10}{seats:<6}{creation_date:<20}{payment_amount:<10}")
 
+    def flightRemove(self, username):
+        connection = mysql.connector.connect(
+            host="localhost",
+            user="educative",
+            password="secret",
+            database="flight")
+
+        mycursor = connection.cursor()
+        mycursor.execute("SELECT account_id FROM account WHERE username = %s", (username,))
+        accID = mycursor.fetchone()
+        user_id = accID[0]
+        remFlight = input("Enter the flight number of the reservation you wish to cancel: ")
+
+        query = "DELETE FROM flightreservation WHERE flight_no = %s AND user_id = %s"
+        mycursor.execute(query, (remFlight, user_id))
+        connection.commit()
+
+        if mycursor.rowcount == 0:
+            print("User has not booked flight number ", remFlight, " please retry with a valid flight.")
+        else:
+            print("Reservation for flight ", remFlight, " has been cancelled.")
+
            
             
