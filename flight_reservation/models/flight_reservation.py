@@ -102,15 +102,26 @@ class FlightReservation:
         accID = mycursor.fetchone()
         user_id = accID[0]
         remFlight = input("Enter the flight number of the reservation you wish to cancel: ")
-
-        query = "DELETE FROM flightreservation WHERE flight_no = %s AND user_id = %s"
+        
+        query = "SELECT 1 FROM flightreservation WHERE flight_no = %s AND user_id = %s"
         mycursor.execute(query, (remFlight, user_id))
-        connection.commit()
+        result = mycursor.fetchone()
 
-        if mycursor.rowcount == 0:
+        if result is None:
             print("User has not booked flight number ", remFlight, " please retry with a valid flight.")
-        else:
-            print("Reservation for flight ", remFlight, " has been cancelled.")
+            return
 
+        choice = input("Do you want to cancel this flight?: ").strip().lower()
+        if choice in ['no', 'n']:
+            print("Understood, returning to main menu")
+            return
+        elif choice in ['yes', 'y']:
+            query = "DELETE FROM flightreservation WHERE flight_no = %s AND user_id = %s"
+            mycursor.execute(query, (remFlight, user_id))
+            connection.commit()
+
+            print("Reservation for flight ", remFlight, " has been cancelled.")
+        else:
+            print("Input error, please try again")
            
             
