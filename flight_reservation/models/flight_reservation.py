@@ -77,19 +77,40 @@ class FlightReservation:
         accID = mycursor.fetchone()
 
         user_id = accID[0]
-        query = "SELECT * FROM flightreservation WHERE user_id = %s"
-        mycursor.execute(query, (user_id,))
-        user_flights = mycursor.fetchall()
+        searchChoice =  input("Enter 1 to display all flights, enter 2 to search for a flight: ").strip()
+        if searchChoice == '1':
+            query = "SELECT * FROM flightreservation WHERE user_id = %s"
+            mycursor.execute(query, (user_id,))
+            user_flights = mycursor.fetchall()
 
-        if not user_flights:
-            print(f"No flight reservations found for user: {username}")
-        else:
-            print(f"{'Reservation':<15}{'User ID':<10}{'Flight No':<10}{'Seats':<6}{'Date':<20}{'Amount':<10}")
-            print("-" * 70)
-            for flight in user_flights:
-                reservation_number, user_id, flight_no, seats, creation_date, payment_amount = flight
+            if not user_flights:
+                print(f"No flight reservations found for user: {username}")
+            else:
+                print(f"{'Reservation':<15}{'User ID':<10}{'Flight No':<10}{'Seats':<6}{'Date':<20}{'Amount':<10}")
+                print("-" * 70)
+                for flight in user_flights:
+                    reservation_number, user_id, flight_no, seats, creation_date, payment_amount = flight
+                    print(f"{reservation_number:<15}{user_id:<10}{flight_no:<10}{seats:<6}{creation_date:<20}{payment_amount:<10}")
+        elif searchChoice == '2':
+                searchFlight = input("Enter the flight number to view: ").strip()
+                query = "SELECT reservation_number, user_id, flight_no, seats, creation_date, payment_amount FROM flightreservation WHERE flight_no = %s AND user_id = %s"
+                mycursor.execute(query, (searchFlight, user_id))
+                flight = mycursor.fetchone()
+
+                if flight is None:
+                    print(f"No reservation found for flight {searchFlight}.")
+                    return
+
+                reservation_number, user_id_fetched, flight_no, seats, creation_date, payment_amount = flight
+
+                header = f"{'Reservation':<15}{'User ID':<10}{'Flight No':<10}{'Seats':<6}{'Date':<20}{'Amount':<10}"
+                print(header)
+                print("-" * len(header))
                 print(f"{reservation_number:<15}{user_id:<10}{flight_no:<10}{seats:<6}{creation_date:<20}{payment_amount:<10}")
-
+        else: 
+            print(searchChoice, "is not an option, please retry with a valid choice.")
+            return
+        
     def flightRemove(self, username):
         connection = mysql.connector.connect(
             host="localhost",
