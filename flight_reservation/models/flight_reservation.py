@@ -22,7 +22,6 @@ class FlightReservation:
         if connection.is_connected():
             mycursor = connection.cursor()
 
-            print("LOGIN")
             departure = input("Select departure airport (Use 3 letter abbreviation): ")
             arrival = input("Select destination nairport (Use 3 letter abbreviation): ")
             

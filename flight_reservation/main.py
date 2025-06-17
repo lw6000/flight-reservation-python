@@ -29,13 +29,54 @@ def login():
         mycursor.execute(insert_query, (username, password))
         result = mycursor.fetchone()
         if result:
-            loginSuccess(username)
+            loginID = result[0]
+            mycursor.execute("SELECT role_id FROM account_role WHERE account_id = %s",(loginID,))
+            loginRole = mycursor.fetchall() 
+            #if loginRole: may need later for when I update roles
+            role_id = [row[0] for row in loginRole]
+            if 1 in role_id:
+                loginSuccessAdmin(username)
+            else:
+                loginSuccess(username)
         else:
             print("Incorrect username or password, please type 1 try again.")
                 
 
 def loginSuccess(username):
     print("Hello ", username)
+    print("Please Select an Option (1-4): ")
+    loginchoice = None
+    reservation = FlightReservation()
+    while loginchoice != '4':
+        print("1. Search/Reserve Flights")
+        print("2. View Reservations")
+        print("3. Cancel Reservation")
+        #print("4. Add Flight (admin only)")
+        #print("5. Cancel Flight (admin only)")
+        print("4. Log off")
+        loginchoice = input("Make your selection now: ")
+        if loginchoice == '1':
+            print("Search for Flights:")
+            reservation.reserveFlight(username)
+        elif loginchoice == '2':
+            print("Your Flight Reservations:")
+            reservation.flightSearch(username)
+        elif loginchoice == '3':
+            print("Cancel a flight reservation?")
+            reservation.flightRemove(username)
+        #elif loginchoice == '4':
+        #    print("Here to add new flight.")
+        #elif loginchoice == '5':
+        #    print("Here to cancel a flight.")
+        elif loginchoice == '4':
+            print("Logging off...")
+            return
+        else:
+            print(loginchoice, "is not an option, please select options 1-6.")
+            loginchoice = None
+
+def loginSuccessAdmin(username):
+    print("Hello ", username, ", Administrator.")
     print("Please Select an Option (1-6): ")
     loginchoice = None
     reservation = FlightReservation()
