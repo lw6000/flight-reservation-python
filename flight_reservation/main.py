@@ -51,8 +51,6 @@ def loginSuccess(username):
         print("1. Search/Reserve Flights")
         print("2. View Reservations")
         print("3. Cancel Reservation")
-        #print("4. Add Flight (admin only)")
-        #print("5. Cancel Flight (admin only)")
         print("4. Log off")
         loginchoice = input("Make your selection now: ")
         if loginchoice == '1':
@@ -64,10 +62,6 @@ def loginSuccess(username):
         elif loginchoice == '3':
             print("Cancel a flight reservation?")
             reservation.flightRemove(username)
-        #elif loginchoice == '4':
-        #    print("Here to add new flight.")
-        #elif loginchoice == '5':
-        #    print("Here to cancel a flight.")
         elif loginchoice == '4':
             print("Logging off...")
             return
