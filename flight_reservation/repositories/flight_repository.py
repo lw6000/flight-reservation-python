@@ -1,4 +1,4 @@
-# To handle operations related to the Flight table.
+# To handle operations related to the Flight database
 import mysql.connector
 from datetime import datetime, timedelta
 from collections import deque
