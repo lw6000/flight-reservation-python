@@ -3,6 +3,7 @@ import os
 import sys
 from mysql.connector.errors import IntegrityError
 from models.flight_reservation import FlightReservation
+from flightutilities import keyContinue
 import pwinput
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
@@ -57,12 +58,15 @@ def loginSuccess(username):
         if loginchoice == '1':
             print("Search for Flights:")
             reservation.reserveFlight(username)
+            keyContinue()
         elif loginchoice == '2':
             print("Your Flight Reservations:")
             reservation.flightSearch(username)
+            keyContinue()
         elif loginchoice == '3':
             print("Cancel a flight reservation?")
             reservation.flightRemove(username)
+            keyContinue()
         elif loginchoice == '4':
             print("Logging off...")
             return
@@ -86,16 +90,21 @@ def loginSuccessAdmin(username):
         if loginchoice == '1':
             print("Search for Flights:")
             reservation.reserveFlight(username)
+            keyContinue()
         elif loginchoice == '2':
             print("Your Flight Reservations:")
             reservation.flightSearch(username)
+            keyContinue()
         elif loginchoice == '3':
             print("Cancel a flight reservation?")
             reservation.flightRemove(username)
+            keyContinue()
         elif loginchoice == '4':
             print("Here to add new flight.")
+            keyContinue()
         elif loginchoice == '5':
             print("Here to cancel a flight.")
+            keyContinue()
         elif loginchoice == '6':
             print("Logging off...")
             return
