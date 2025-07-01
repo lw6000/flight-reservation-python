@@ -3,6 +3,7 @@ import os
 import sys
 from mysql.connector.errors import IntegrityError
 from models.flight_reservation import FlightReservation
+import pwinput
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 # Task 2, 5, 9: Import modules here
@@ -21,7 +22,7 @@ def login():
     database="flight")
 
     username = input("Enter Username: ")
-    password = input("Enter Password: ")
+    password = pwinput.pwinput(prompt="Enter Password: ", mask="*")
 
     if connection.is_connected():
         mycursor = connection.cursor()
