@@ -71,7 +71,7 @@ def loginSuccess(username):
             loginchoice = None
 
 def loginSuccessAdmin(username):
-    print("Hello ", username, ", Administrator.")
+    print("Hello ", username, ", (Administrator Options Available).")
     print("Please Select an Option (1-6): ")
     loginchoice = None
     reservation = FlightReservation()
