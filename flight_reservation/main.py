@@ -104,6 +104,7 @@ def loginSuccessAdmin(username):
             keyContinue()
         elif loginchoice == '5':
             print("Here to cancel a flight.")
+            reservation.adminRemove()
             keyContinue()
         elif loginchoice == '6':
             print("Logging off...")

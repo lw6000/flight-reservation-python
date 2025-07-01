@@ -143,5 +143,43 @@ class FlightReservation:
             print("Reservation for flight ", remFlight, " has been cancelled.")
         else:
             print("Input error, please try again")
+               
+    def adminRemove(self):
+        connection = mysql.connector.connect(
+            host="localhost",
+            user="educative",
+            password="secret",
+            database="flight")
+
+        mycursor = connection.cursor(dictionary=True)
+        remFlight = input("Enter the flight number of the reservation you wish to cancel: ")
+        
+        mycursor.execute("""SELECT airline_code, dep_time, arri_time, dep_port, arri_port, arri_time FROM flight WHERE flight_no = %s""", (remFlight,))
+        row = mycursor.fetchone()
+        if row is None:
+            print("There is no flight with the number  ", remFlight, " please retry with a valid flight.")
+            mycursor.close()
+            connection.close()
+            return
+
+        print(f"\nFound flight {remFlight}:")
+        print(f"  Airline Code:    {row['airline_code']}")
+        print(f"  Departure Time:    {row['dep_time']}")
+        print(f"  Arrival Time:      {row['arri_time']}")
+        print(f"  Departure: {row['dep_port']}")
+        print(f"  Arrival:   {row['arri_port']}\n")
+
+
+        choice = input("Do you want to cancel this flight?: ").strip().lower()
+        if choice in ['no', 'n']:
+            print("Understood, returning to main menu")
+            return
+        elif choice in ['yes', 'y']:
+            query = "DELETE FROM flight WHERE flight_no = %s"
+            mycursor.execute(query, (remFlight,))
+            connection.commit()
+
+            print("Flight number ", remFlight, " has been cancelled.")
+        else:
+            print("Input error, please try again")
            
-            
