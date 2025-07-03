@@ -32,7 +32,7 @@ class FlightReservation:
                 LIMIT 1
             """
 
-            mycursor.execute(query, (departure, arrival))
+            mycursor.execute(query, (arrival, departure))
             myresult = mycursor.fetchone()
 
             if myresult:
@@ -52,6 +52,7 @@ class FlightReservation:
                         today = date.today()
                         data = (accID[0], flightNum, 2, today, 420.00)
                         mycursor.execute(insert_query, data)
+                        mycursor.execute("""UPDATE flight SET booked_seats = booked_seats + 1 WHERE flight_no = %s""", (flightNum,))
                         connection.commit()
                         print("Flight number:", myresult[0], " booked, have a safe flight!")
                         return
@@ -138,12 +139,29 @@ class FlightReservation:
         elif choice in ['yes', 'y']:
             query = "DELETE FROM flightreservation WHERE flight_no = %s AND user_id = %s"
             mycursor.execute(query, (remFlight, user_id))
+            mycursor.execute("""UPDATE flight SET booked_seats = booked_seats - 1 WHERE flight_no = %s""", (remFlight,))
             connection.commit()
 
             print("Reservation for flight ", remFlight, " has been cancelled.")
         else:
             print("Input error, please try again")
                
+    def adminflightadd(self):
+        connection = mysql.connector.connect(
+            host="localhost",
+            user="educative",
+            password="secret",
+            database="flight")
+
+        mycursor = connection.cursor()
+        #mycursor.execute("SELECT account_id FROM account WHERE username = %s", (username,))
+        getArri = input("Enter the Destination of the flight (3 initials only): ").strip()
+        getDep = input("Enter the location of the flight's departure (3 initials only): ").strip()
+        getCode = input("Enter the airline code: ").strip()
+        getDist = ("Enter the flight's distance in km: ").strip()
+        
+
+
     def adminRemove(self):
         connection = mysql.connector.connect(
             host="localhost",
